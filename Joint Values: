@@ -1,0 +1,123 @@
+Joint Values: 
+# obj1 pos 1
+ur5_shoulder_pan_joint: -9.35256127763
+ur5_shoulder_lift_joint: -70.6116506803
+ur5_elbow_joint: 100.702779077
+ur5_wrist_1_joint: 239.745121795
+ur5_wrist_2_joint: 269.890243393
+ur5_wrist_3_joint: -44.2766386957
+
+# pos 2 obj 1
+ur5_shoulder_pan_joint: -11.2247457199
+ur5_shoulder_lift_joint: 320.697963999
+ur5_elbow_joint: 71.3120990942
+ur5_wrist_1_joint: 57.8247629324
+ur5_wrist_2_joint: 90.110400878
+ur5_wrist_3_joint: 136.968851495
+
+
+#pos 3 obj 1
+ur5_shoulder_pan_joint: -85.816423075
+ur5_shoulder_lift_joint: -127.264141767
+ur5_elbow_joint: -53.2525051666
+ur5_wrist_1_joint: -89.6187649198
+ur5_wrist_2_joint: -270.128397619
+ur5_wrist_3_joint: 59.2559608903
+
+#pos 1 obj 2
+ur5_shoulder_pan_joint: 14.3842240152
+ur5_shoulder_lift_joint: -68.1135561839
+ur5_elbow_joint: 118.950382616
+ur5_wrist_1_joint: 219.051218065
+ur5_wrist_2_joint: 269.840263153
+ur5_wrist_3_joint: -31.4591399195
+
+#pos 2 obj 2
+ur5_shoulder_pan_joint: 14.3709650605
+ur5_shoulder_lift_joint: -64.0026599797
+ur5_elbow_joint: 119.909790374
+ur5_wrist_1_joint: 213.979937007
+ur5_wrist_2_joint: 269.832702479
+ur5_wrist_3_joint: -31.4766339738
+
+
+#pos 3 obj 2
+
+
+ur5_shoulder_pan_joint: -94.0267179873
+ur5_shoulder_lift_joint: -54.1188754157
+ur5_elbow_joint: 33.9385131506
+ur5_wrist_1_joint: 290.0434588
+ur5_wrist_2_joint: 270.142519934
+ur5_wrist_3_joint: -51.8727962251
+
+pose_target = geometry_msgs.msg.Pose()
+pose_target.position.x = 0.56
+pose_target.position.y = -0.025
+pose_target.position.z = 0.86
+pose_target.orientation.x = -0.5
+pose_target.orientation.y = 0.5
+pose_target.orientation.z = -0.5
+pose_target.orientation.w = 0.5
+arm_group.set_pose_target(pose_target)
+plan1=arm_group.go()
+
+#lift the object
+pose_target.position.x = 0.0
+pose_target.position.y = 0.71
+pose_target.position.z = 5.0
+pose_target.orientation.x = -0.5
+pose_target.orientation.y = 0.5
+pose_target.orientation.z = -0.5
+pose_target.orientation.w = 0.5
+arm_group.set_pose_target(pose_target)
+plan1=arm_group.g
+
+arm_group.set_named_target("obj1")
+plan1=arm_group.go()
+
+OBJECT 1
+#arm 1st grabbing position
+
+list_joint_angles=[math.radians(-9.35256127763),
+                   math.radians(-70.6116506803), 
+                   math.radians(100.702779077), 
+                   math.radians(239.745121795),
+                   math.radians(269.890243393), 
+                   math.radians(-44.2766386957)]
+
+joint_goal = arm_group.set_joint_value_target(list_joint_angles)
+arm_group.go(joint_goal, wait=True)
+
+# arm 2nd grabbing position
+list_joint_angles=[math.radians(-11.2247457199),
+                   math.radians(320.697963999), 
+                   math.radians(71.3120990942), 
+                   math.radians(57.8247629324),
+                   math.radians(90.110400878), 
+                   math.radians(136.968851495)]
+
+joint_goal = arm_group.set_joint_value_target(list_joint_angles)
+arm_group.go(joint_goal, wait=True)
+
+#close hand
+hand_group.set_named_target("close")
+plan2=hand_group.go()
+
+arm_group.set_named_target("obj1")
+plan1=arm_group.go()
+
+# arm 3rd grabbing position
+list_joint_angles=[math.radians(-85.816423075),
+                   math.radians(-127.264141767), 
+                   math.radians(-53.2525051666), 
+                   math.radians(-89.6187649198),
+                   math.radians(-270.128397619), 
+                   math.radians(59.2559608903)]
+
+joint_goal = arm_group.set_joint_value_target(list_joint_angles)
+arm_group.go(joint_goal, wait=True)
+
+#open gripper
+hand_group.set_named_target("open")
+plan2=hand_group.go()
